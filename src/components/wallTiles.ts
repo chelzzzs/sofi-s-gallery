@@ -37,10 +37,16 @@ export const tileAt = (target: EventTarget, x?: number, y?: number) => {
   return tile ? { index: indexOfTile(tile), rect: imageRect(tile) } : null
 }
 
-// The wall repeats every photo several times; pick the on-screen copy closest
-// to the centre so the lightbox can fly back into it.
-export const tileRect = (index: number): DOMRect | null => {
-  let best: DOMRect | null = null
+export type ReturnTarget = { tile: HTMLElement; rect: DOMRect }
+
+// Where the lightbox flies back to: the tile that was clicked, still lifted
+// under the open photo, if it shows this photo; otherwise the on-screen copy
+// closest to the centre (the wall repeats every photo several times).
+export const returnTarget = (index: number): ReturnTarget | null => {
+  const active = document.querySelector<HTMLElement>('.drift-wall__tile.is-active')
+  if (active && indexOfTile(active) === index) return { tile: active, rect: imageRect(active) }
+
+  let best: ReturnTarget | null = null
   let bestDist = Infinity
   document.querySelectorAll<HTMLElement>('[data-tile-id]').forEach((tile) => {
     if (indexOfTile(tile) !== index) return
@@ -49,7 +55,7 @@ export const tileRect = (index: number): DOMRect | null => {
     const dist = centreDistance(r, innerWidth / 2, innerHeight / 2)
     if (dist < bestDist) {
       bestDist = dist
-      best = r
+      best = { tile, rect: r }
     }
   })
   return best

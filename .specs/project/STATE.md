@@ -38,3 +38,8 @@
 ## 008 — Cliques no mural e pausa com foto aberta (2026-10-17)
 - Bug: ~metade dos cliques caía no `.drift-wall__track` (mesmo plano 3D dos tiles) ou, no topo inclinado, na própria seção → nada abria. Fix: plano/coluna/trilho com `pointer-events: none` (DriftWall.css) + fallback geométrico em `tileAt` (tile cuja imagem cobre o ponto).
 - DriftWall ganhou prop `paused`: congela colunas e inclinação; ao soltar, as colunas aceleram de novo do zero. App pausa enquanto o lightbox está montado (inclui a animação de fechar, pra foto pousar exatamente no tile).
+
+## 009 — Cross fade ao fechar (2026-10-17)
+- Problema: a foto voa reta e o mural é inclinado, e o tile clicado "apagava" ao abrir (pointerleave/blur) e reacendia ao fechar (foco restaurado) → piscada.
+- DriftWall pausado não solta o tile ativo (release/pointerleave ignorados) → o tile clicado fica aceso por baixo da foto.
+- Fechar (600ms): fundo some nos primeiros ~60%, a foto se dissolve na segunda metade do voo até sumir em cima do tile. Se a foto mudou, a cópia de destino é acesa com `data-returning` e depois volta ao normal.

@@ -2,12 +2,13 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import type { Photo } from '../photos'
 import { Arrow } from './Arrow'
 import styles from './Lightbox.module.css'
+import type { ReturnTarget } from './wallTiles'
 
 type Props = {
   photos: Photo[]
   startIndex: number
   origin: DOMRect | null
-  locate: (index: number) => DOMRect | null
+  locate: (index: number) => ReturnTarget | null
   onClose: () => void
 }
 
@@ -16,6 +17,7 @@ const TAP_THRESHOLD = 6
 const TILE_RADIUS = 14
 const EASE_OPEN = 'cubic-bezier(0.22, 1, 0.36, 1)'
 const EASE_CLOSE = 'cubic-bezier(0.55, 0, 0.25, 1)'
+const CLOSE_MS = 600
 
 const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -58,26 +60,33 @@ export function Lightbox({ photos, startIndex, origin, locate, onClose }: Props)
     if (closing.current) return
     closing.current = true
     const el = img.current
+    const target = locate(index)
+    // The clicked tile is still lit under the photo; any other copy is lit up
+    // now so there is something bright to cross-fade into.
+    const returning = target && !target.tile.classList.contains('is-active') ? target.tile : null
+    if (returning) returning.dataset.returning = ''
     if (el && !reducedMotion()) {
       el.style.transform = ''
       const at = el.getBoundingClientRect()
-      const target = locate(index)
+      // The photo flies flat while the wall is tilted, so their shapes never
+      // match exactly: the backdrop clears early to reveal the tile, and over
+      // the second half of the flight the photo dissolves into it.
       const out: Keyframe[] = target
-        ? [
-            { ...settled, opacity: 1 },
-            { ...asTile(target, at), opacity: 1, offset: 0.85 },
-            { ...asTile(target, at), opacity: 0 },
-          ]
+        ? [{ ...settled, opacity: 1 }, { opacity: 1, offset: 0.45 }, { ...asTile(target.rect, at), opacity: 0 }]
         : [{ transform: 'none', opacity: 1 }, shrunk]
       await Promise.all([
-        el.animate(out, { duration: 520, easing: EASE_CLOSE, fill: 'forwards' }).finished,
-        backdrop.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 460, easing: 'ease-in', fill: 'forwards' })
-          .finished,
+        el.animate(out, { duration: CLOSE_MS, easing: EASE_CLOSE, fill: 'forwards' }).finished,
+        backdrop.current?.animate([{ opacity: 1 }, { opacity: 0 }], {
+          duration: CLOSE_MS * 0.6,
+          easing: 'ease-out',
+          fill: 'forwards',
+        }).finished,
         chrome.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, fill: 'forwards' }).finished,
       ])
     }
     dialog.current?.close()
     onClose()
+    if (returning) setTimeout(() => delete returning.dataset.returning, 150)
   }
 
   useLayoutEffect(() => {

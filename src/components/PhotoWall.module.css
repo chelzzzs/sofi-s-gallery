@@ -25,3 +25,17 @@
     opacity: 0.2;
   }
 }
+
+/* The tile a closing photo flies back into: lit up like a hovered tile (but
+   not lifted) so the photo can cross-fade into it. */
+.wall :global(.drift-wall__tile[data-returning] .drift-wall__inner) {
+  opacity: 1;
+}
+
+.wall :global(.drift-wall__tile[data-returning] .drift-wall__overlay) {
+  opacity: 0;
+}
+
+.wall :global(.drift-wall__tile[data-returning] img) {
+  filter: grayscale(0) saturate(1.05);
+}

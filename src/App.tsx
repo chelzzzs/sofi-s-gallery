@@ -4,7 +4,7 @@ import { Intro } from './components/Intro'
 import { Lightbox } from './components/Lightbox'
 import { PhotoWall } from './components/PhotoWall'
 import { SCULPTURE_SRC, Sculpture } from './components/Sculpture'
-import { tileRect } from './components/wallTiles'
+import { returnTarget } from './components/wallTiles'
 import { photos } from './photos'
 
 type Phase = 'intro' | 'leaving' | 'done'
@@ -39,7 +39,7 @@ export function App() {
             photos={photos}
             startIndex={open.index}
             origin={open.origin}
-            locate={tileRect}
+            locate={returnTarget}
             onClose={() => setOpen(null)}
           />
         )}

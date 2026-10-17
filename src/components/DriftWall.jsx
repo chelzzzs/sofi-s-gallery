@@ -187,6 +187,9 @@ const DriftWall = ({
     setActiveId(id);
   }, []);
   const release = useCallback(() => {
+    // While paused (a photo is open over the wall) the active tile stays
+    // lifted, so the photo can land back on it exactly as it left.
+    if (pausedRef.current) return;
     activeIdRef.current = null;
     hoveredColRef.current = -1;
     setActiveId(null);
@@ -215,6 +218,7 @@ const DriftWall = ({
   );
 
   const handlePointerLeaveWall = useCallback(() => {
+    if (pausedRef.current) return;
     wallHoveredRef.current = false;
     pointerRef.current = { x: 0, y: 0 };
     release();
