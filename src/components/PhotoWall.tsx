@@ -1,4 +1,4 @@
-import type { KeyboardEvent, MouseEvent } from 'react'
+import { useMemo, type KeyboardEvent, type MouseEvent } from 'react'
 import type { Photo } from '../photos'
 import DriftWall from './DriftWall'
 import styles from './PhotoWall.module.css'
@@ -11,7 +11,9 @@ type Props = {
 }
 
 export function PhotoWall({ photos, paused, onOpen }: Props) {
-  const items = photos.map((p) => ({ image: p.tile, title: p.alt }))
+  // Must stay the same array across renders: DriftWall resets every column to
+  // its starting position whenever `items` changes identity.
+  const items = useMemo(() => photos.map((p) => ({ image: p.tile, title: p.alt })), [photos])
 
   const onClick = (e: MouseEvent) => {
     const tile = tileAt(e.target, e.clientX, e.clientY)

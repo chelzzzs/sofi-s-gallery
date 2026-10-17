@@ -44,3 +44,4 @@
 - DriftWall pausado não solta o tile ativo (release/pointerleave ignorados) → o tile clicado fica aceso por baixo da foto.
 - Fechar (600ms): fundo some nos primeiros ~60%, a foto se dissolve na segunda metade do voo até sumir em cima do tile. Se a foto mudou, a cópia de destino é acesa com `data-returning` e depois volta ao normal.
 - Depois de fechar, o mural segue congelado mais 600ms (`SETTLE_MS` em App) até o tile assentar; abrir outra foto nesse intervalo cancela o descongelamento.
+- Bug do "corte" ao descongelar: `items` do PhotoWall era um array novo a cada render; o DriftWall reseta os offsets das colunas quando `items` muda de identidade. Agora `useMemo`. Lição: props de array/objeto pro DriftWall precisam ser estáveis.
