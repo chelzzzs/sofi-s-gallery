@@ -1,0 +1,48 @@
+.hero {
+  position: relative;
+  height: 100svh;
+  background: #120f17;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 16svh;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+
+.next {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  translate: -50% 0;
+  border: 1px solid rgb(244 241 234 / 0.25);
+  border-radius: 50%;
+  background: rgb(18 15 23 / 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  cursor: pointer;
+  transition: border-color 200ms;
+  animation: bob 2.4s var(--ease) 1.6s infinite;
+}
+
+.next:hover {
+  border-color: var(--fg);
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: none;
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}

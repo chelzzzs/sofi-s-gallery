@@ -1,0 +1,18 @@
+.main {
+  transition:
+    opacity 1100ms var(--ease) 450ms,
+    transform 1600ms var(--ease) 300ms,
+    filter 1100ms var(--ease) 450ms;
+}
+
+.main:focus {
+  outline: none;
+}
+
+/* Waiting behind the intro: slightly zoomed and out of focus, so the gallery
+   settles into place as the light burns out. */
+.main[data-phase='intro'] {
+  opacity: 0;
+  transform: scale(1.08);
+  filter: blur(12px);
+}

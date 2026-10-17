@@ -1,19 +1,23 @@
-import { useState } from 'react'
 import LightPillar from './LightPillar'
 import styles from './Intro.module.css'
 
-export function Intro({ onEnter }: { onEnter: () => void }) {
-  const [leaving, setLeaving] = useState(false)
+type Props = {
+  leaving: boolean
+  onLeave: () => void
+  onDone: () => void
+}
 
+export function Intro({ leaving, onLeave, onDone }: Props) {
   return (
     <div
       className={styles.intro}
       data-leaving={leaving || undefined}
       onTransitionEnd={(e) => {
-        if (leaving && e.target === e.currentTarget) onEnter()
+        if (leaving && e.target === e.currentTarget && e.propertyName === 'opacity') onDone()
       }}
     >
       <LightPillar
+        className={styles.pillar}
         topColor="#ff4d1a"
         bottomColor="#ffd166"
         intensity={1.1}
@@ -35,7 +39,7 @@ export function Intro({ onEnter }: { onEnter: () => void }) {
         fade={0}
         lightMode={false}
       />
-      <button type="button" className={styles.enter} onClick={() => setLeaving(true)} disabled={leaving}>
+      <button type="button" className={styles.enter} onClick={onLeave} disabled={leaving}>
         Sofi’s Gallery
       </button>
     </div>

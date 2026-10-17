@@ -1,19 +1,36 @@
 .intro {
+  --out: cubic-bezier(0.7, 0, 0.2, 1);
   position: fixed;
   inset: 0;
   z-index: 10;
   display: grid;
   place-items: center;
   background: var(--bg);
-  transition:
-    opacity 900ms var(--ease),
-    visibility 900ms;
+}
+
+:global(html):has(.intro:not([data-leaving])) {
+  overflow: hidden;
 }
 
 .intro[data-leaving] {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  transition:
+    opacity 900ms var(--ease) 350ms,
+    visibility 0s linear 1250ms;
+}
+
+/* Passing through the light: the pillar rushes toward the viewer and burns out. */
+.pillar {
+  transition:
+    transform 1400ms var(--out),
+    filter 1400ms var(--out);
+}
+
+.intro[data-leaving] .pillar {
+  transform: scale(1.8);
+  filter: blur(16px) brightness(1.8);
 }
 
 .enter {
@@ -49,9 +66,22 @@
   transform: scale(0.98);
 }
 
+.intro[data-leaving] .enter {
+  animation: out 700ms var(--out) forwards;
+}
+
 @keyframes rise {
   from {
     opacity: 0;
     translate: 0 10px;
+  }
+}
+
+@keyframes out {
+  to {
+    opacity: 0;
+    scale: 1.35;
+    filter: blur(8px);
+    letter-spacing: 0.3em;
   }
 }
