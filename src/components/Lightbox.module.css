@@ -9,9 +9,8 @@
   padding: 0;
   border: 0;
   overflow: hidden;
-  background: rgb(8 7 6 / 0.97);
+  background: transparent;
   color: var(--fg);
-  animation: fade 260ms var(--ease);
 }
 
 .dialog::backdrop {
@@ -22,6 +21,12 @@
   overflow: hidden;
 }
 
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(8 7 6 / 0.96);
+}
+
 .stage {
   position: absolute;
   inset: 0;
@@ -30,6 +35,7 @@
   place-items: center;
   padding: 72px 88px;
   touch-action: none;
+  container-type: size;
 }
 
 @media (max-width: 700px) {
@@ -39,14 +45,30 @@
 }
 
 .photo {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
+  /* Sized from the photo's ratio rather than its pixels, so the box is final
+     before the file loads and the open animation can measure it. */
+  width: min(100cqw, 100cqh * var(--r));
   height: auto;
-  object-fit: contain;
+  aspect-ratio: var(--r);
   user-select: none;
+  /* The wall's tile is the same photo at 600px: shown underneath until the
+     full-size file arrives, so the image never flies in empty. */
+  background-size: 100% 100%;
   transition: transform 300ms var(--ease);
-  animation: fade 280ms var(--ease);
+}
+
+.photo[data-dir] {
+  animation: slide 460ms var(--ease);
+}
+
+.chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chrome > * {
+  pointer-events: auto;
 }
 
 .counter {
@@ -117,8 +139,9 @@
   }
 }
 
-@keyframes fade {
+@keyframes slide {
   from {
     opacity: 0;
+    transform: translateX(calc(var(--dir) * 56px)) scale(0.97);
   }
 }

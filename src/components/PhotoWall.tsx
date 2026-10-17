@@ -2,37 +2,27 @@ import type { KeyboardEvent, MouseEvent } from 'react'
 import type { Photo } from '../photos'
 import DriftWall from './DriftWall'
 import styles from './PhotoWall.module.css'
-
-const COLUMNS = 3
+import { COLUMNS, tileAt } from './wallTiles'
 
 type Props = {
   photos: Photo[]
-  onOpen: (index: number) => void
-}
-
-// DriftWall lays item i into column i % COLUMNS, row floor(i / COLUMNS), and
-// tags each tile "col-copy-row"; map that back to the photo index.
-const indexOf = (target: EventTarget) => {
-  const tile = (target as Element).closest<HTMLElement>('[data-tile-id]')
-  if (!tile) return null
-  const [col, , row] = tile.dataset.tileId!.split('-').map(Number)
-  return row * COLUMNS + col
+  onOpen: (index: number, origin: DOMRect) => void
 }
 
 export function PhotoWall({ photos, onOpen }: Props) {
   const items = photos.map((p) => ({ image: p.tile, title: p.alt }))
 
   const onClick = (e: MouseEvent) => {
-    const i = indexOf(e.target)
-    if (i !== null) onOpen(i)
+    const tile = tileAt(e.target)
+    if (tile) onOpen(tile.index, tile.rect)
   }
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key !== 'Enter' && e.key !== ' ') return
-    const i = indexOf(e.target)
-    if (i === null) return
+    const tile = tileAt(e.target)
+    if (!tile) return
     e.preventDefault()
-    onOpen(i)
+    onOpen(tile.index, tile.rect)
   }
 
   return (

@@ -27,3 +27,10 @@
 ## 005 — Parallax scrolling (2026-10-16)
 - CSS scroll-driven animations (`view-timeline`), sem JS: escultura afunda a ~meia velocidade e escurece ao sair; mural sobe mais rápido e endireita ao entrar; seta some no primeiro quarto.
 - Só com `prefers-reduced-motion: no-preference` e `@supports (animation-timeline: view())`; sem suporte (Firefox sem a flag) a página só rola normal.
+
+## 007 — Lightbox com transição de voo (2026-10-17)
+- Abrir: a foto sai do tile clicado (mesma posição, recorte "cover" e cantos de 14px via clip-path) e cresce até o centro; fundo escurece, controles aparecem depois.
+- Fechar: volta pro tile visível mais perto do centro com aquela foto (`tileRect` em `wallTiles.ts`) e some no fim; sem tile visível, encolhe e some.
+- Trocar foto: desliza na direção da navegação.
+- A foto do lightbox tem tamanho pela proporção (`cqw/cqh`), não pelo arquivo: antes media 0×0 até carregar e a animação quebrava. O tile (600px) fica de fundo até a imagem grande chegar.
+- Lição: efeitos que medem e animam precisam cancelar animações anteriores (StrictMode roda o efeito 2×).
