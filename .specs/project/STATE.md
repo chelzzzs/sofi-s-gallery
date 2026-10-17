@@ -17,3 +17,9 @@
 ## 003 — Transição + escultura (2026-10-16)
 - Fases no App: `intro` → `leaving` → `done`. No clique o pilar escala/desfoca ("atravessar a luz"), o botão se dissolve e a galeria sai de zoom+blur.
 - Seção da escultura (`Sculpture` + `DitherVeil`, dep `ogl`) em 100svh acima do carrossel; montada só no `leaving` pra a animação de dither tocar na entrada. Imagem (Unsplash, hotlink) pré-carregada durante a intro.
+
+## 004 — DriftWall no lugar do carrossel (2026-10-16)
+- Carrossel removido. `PhotoWall` envolve o `DriftWall` (código da usuária, intacto) com as 15 fotos em tiles WebP 600px.
+- Lightbox mantido: clique/Enter num tile abre a foto (índice = linha × 3 + coluna, a partir do `data-tile-id`).
+- Tiles cortam as fotos em 228×132 (decisão da usuária; contraria o princípio 1 da Constitution pro mural, o lightbox mostra a foto inteira).
+- Em 375px só a coluna central aparece inteira; avaliar tileWidth menor no mobile.

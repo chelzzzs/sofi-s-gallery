@@ -6,7 +6,7 @@ import styles from './Lightbox.module.css'
 type Props = {
   photos: Photo[]
   startIndex: number
-  onClose: (lastIndex: number) => void
+  onClose: () => void
 }
 
 const SWIPE_THRESHOLD = 60
@@ -24,7 +24,7 @@ export function Lightbox({ photos, startIndex, onClose }: Props) {
 
   const close = () => {
     dialog.current?.close()
-    onClose(index)
+    onClose()
   }
 
   useEffect(() => {

@@ -3,13 +3,12 @@ type ImgOutput = { src: string; srcset: string; w: number; h: number }
 export type Photo = {
   id: string
   alt: string
-  ratio: number
-  thumb: ImgOutput
+  tile: string
   full: ImgOutput
 }
 
-const thumbs = import.meta.glob<ImgOutput>('./photos/*.jpg', {
-  query: '?w=700;1200&format=webp&as=img',
+const tiles = import.meta.glob<string>('./photos/*.jpg', {
+  query: '?w=600&format=webp',
   import: 'default',
   eager: true,
 })
@@ -38,10 +37,9 @@ const alts: Record<string, string> = {
   '15': 'Senhor de chapéu descansando num banco de praça',
 }
 
-export const photos: Photo[] = Object.keys(thumbs)
+export const photos: Photo[] = Object.keys(fulls)
   .sort()
   .map((path) => {
     const id = path.match(/(\d+)\.jpg$/)![1]
-    const full = fulls[path]
-    return { id, alt: alts[id] ?? '', ratio: full.w / full.h, thumb: thumbs[path], full }
+    return { id, alt: alts[id] ?? '', tile: tiles[path], full: fulls[path] }
   })
