@@ -10,9 +10,6 @@
   position: absolute;
   inset: 0;
   transform-origin: 50% 30%;
-  /* Feathers the photo's rectangular frame into the backdrop. */
-  -webkit-mask-image: radial-gradient(ellipse 50% 58% at 50% 52%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 50% 58% at 50% 52%, #000 60%, transparent 100%);
 }
 
 .hero::after {
@@ -48,7 +45,7 @@
   border-color: var(--fg);
 }
 
-/* Parallax: while the hero scrolls away, the camera trails behind at about
+/* Parallax: while the hero scrolls away, the sculpture trails behind at about
    half speed, shrinks and dims, so the wall below seems to slide over it. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {

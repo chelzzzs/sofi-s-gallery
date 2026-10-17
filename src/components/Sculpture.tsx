@@ -1,16 +1,16 @@
 import { Arrow } from './Arrow'
 import DitherVeil from './DitherVeil'
-import styles from './Hero.module.css'
+import styles from './Sculpture.module.css'
 
-export const HERO_SRC =
-  'https://images.unsplash.com/photo-1595942548948-77efc2e0b619?q=80&w=1400&auto=format&fit=crop'
+export const SCULPTURE_SRC =
+  'https://images.unsplash.com/photo-1737071371043-761e02b1ef95?q=80&w=1400&auto=format&fit=crop'
 
-export function Hero({ onNext }: { onNext: () => void }) {
+export function Sculpture({ onNext }: { onNext: () => void }) {
   return (
-    <section className={styles.hero} aria-label="Câmera fotográfica">
+    <section className={styles.hero} aria-label="Escultura">
       <div className={styles.layer}>
         <DitherVeil
-          src={HERO_SRC}
+          src={SCULPTURE_SRC}
           pattern="floyd"
           pixelSize={1}
           inkColor="#120f17"
@@ -22,8 +22,8 @@ export function Hero({ onNext }: { onNext: () => void }) {
           rimColor="#a78bfa"
           palette="duotone"
           levels={2}
-          contrast={1.35}
-          brightness={-0.07}
+          contrast={1.15}
+          brightness={0}
           rim={0}
           reverse={false}
           wander={false}
