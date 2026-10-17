@@ -27,3 +27,7 @@
 ## 005 — Parallax scrolling (2026-10-16)
 - CSS scroll-driven animations (`view-timeline`), sem JS: escultura afunda a ~meia velocidade e escurece ao sair; mural sobe mais rápido e endireita ao entrar; seta some no primeiro quarto.
 - Só com `prefers-reduced-motion: no-preference` e `@supports (animation-timeline: view())`; sem suporte (Firefox sem a flag) a página só rola normal.
+
+## 006 — Câmera no lugar da escultura (2026-10-16)
+- `Sculpture` → `Hero`. Imagem: câmera em fundo preto (Unsplash photo-1595942548948-77efc2e0b619, licença Unsplash, hotlink).
+- Fundo da foto é tecido cinza, não preto: `contrast` 1.35 / `brightness` -0.07 e máscara radial na camada pra não aparecer a borda retangular.

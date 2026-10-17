@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import styles from './App.module.css'
+import { HERO_SRC, Hero } from './components/Hero'
 import { Intro } from './components/Intro'
 import { Lightbox } from './components/Lightbox'
 import { PhotoWall } from './components/PhotoWall'
-import { SCULPTURE_SRC, Sculpture } from './components/Sculpture'
 import { photos } from './photos'
 
 type Phase = 'intro' | 'leaving' | 'done'
@@ -17,7 +17,7 @@ export function App() {
   useEffect(() => {
     const img = new Image()
     img.crossOrigin = 'anonymous'
-    img.src = SCULPTURE_SRC
+    img.src = HERO_SRC
   }, [])
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function App() {
     <>
       <main ref={main} tabIndex={-1} className={styles.main} data-phase={phase} inert={phase === 'intro'}>
         {phase !== 'intro' && (
-          <Sculpture onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
+          <Hero onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
         )}
         <div ref={gallery}>
           <PhotoWall photos={photos} onOpen={setOpenAt} />
