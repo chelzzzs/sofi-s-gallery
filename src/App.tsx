@@ -9,11 +9,17 @@ import { photos } from './photos'
 
 type Phase = 'intro' | 'leaving' | 'done'
 
+// After the photo has dissolved into its tile, the wall stays still a moment
+// longer (the tile's own highlight eases out over ~0.4s) before drifting again.
+const SETTLE_MS = 600
+
 export function App() {
   const main = useRef<HTMLElement>(null)
   const gallery = useRef<HTMLDivElement>(null)
   const [phase, setPhase] = useState<Phase>('intro')
   const [open, setOpen] = useState<{ index: number; origin: DOMRect } | null>(null)
+  const [frozen, setFrozen] = useState(false)
+  const thaw = useRef(0)
 
   useEffect(() => {
     const img = new Image()
@@ -25,6 +31,19 @@ export function App() {
     if (phase === 'done') main.current?.focus({ preventScroll: true })
   }, [phase])
 
+  useEffect(() => () => clearTimeout(thaw.current), [])
+
+  const openPhoto = (index: number, origin: DOMRect) => {
+    clearTimeout(thaw.current)
+    setFrozen(true)
+    setOpen({ index, origin })
+  }
+
+  const closePhoto = () => {
+    setOpen(null)
+    thaw.current = window.setTimeout(() => setFrozen(false), SETTLE_MS)
+  }
+
   return (
     <>
       <main ref={main} tabIndex={-1} className={styles.main} data-phase={phase} inert={phase === 'intro'}>
@@ -32,7 +51,7 @@ export function App() {
           <Sculpture onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
         )}
         <div ref={gallery}>
-          <PhotoWall photos={photos} paused={open !== null} onOpen={(index, origin) => setOpen({ index, origin })} />
+          <PhotoWall photos={photos} paused={frozen} onOpen={openPhoto} />
         </div>
         {open && (
           <Lightbox
@@ -40,7 +59,7 @@ export function App() {
             startIndex={open.index}
             origin={open.origin}
             locate={returnTarget}
-            onClose={() => setOpen(null)}
+            onClose={closePhoto}
           />
         )}
       </main>

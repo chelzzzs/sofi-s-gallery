@@ -43,3 +43,4 @@
 - Problema: a foto voa reta e o mural é inclinado, e o tile clicado "apagava" ao abrir (pointerleave/blur) e reacendia ao fechar (foco restaurado) → piscada.
 - DriftWall pausado não solta o tile ativo (release/pointerleave ignorados) → o tile clicado fica aceso por baixo da foto.
 - Fechar (600ms): fundo some nos primeiros ~60%, a foto se dissolve na segunda metade do voo até sumir em cima do tile. Se a foto mudou, a cópia de destino é acesa com `data-returning` e depois volta ao normal.
+- Depois de fechar, o mural segue congelado mais 600ms (`SETTLE_MS` em App) até o tile assentar; abrir outra foto nesse intervalo cancela o descongelamento.
