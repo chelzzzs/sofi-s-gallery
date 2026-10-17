@@ -23,3 +23,7 @@
 - Lightbox mantido: clique/Enter num tile abre a foto (índice = linha × 3 + coluna, a partir do `data-tile-id`).
 - Tiles cortam as fotos em 228×132 (decisão da usuária; contraria o princípio 1 da Constitution pro mural, o lightbox mostra a foto inteira).
 - Em 375px só a coluna central aparece inteira; avaliar tileWidth menor no mobile.
+
+## 005 — Parallax scrolling (2026-10-16)
+- CSS scroll-driven animations (`view-timeline`), sem JS: escultura afunda a ~meia velocidade e escurece ao sair; mural sobe mais rápido e endireita ao entrar; seta some no primeiro quarto.
+- Só com `prefers-reduced-motion: no-preference` e `@supports (animation-timeline: view())`; sem suporte (Firefox sem a flag) a página só rola normal.

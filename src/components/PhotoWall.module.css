@@ -1,3 +1,27 @@
 .wall {
   height: 100svh;
+  overflow: clip;
+  view-timeline: --wall block;
+}
+
+.inner {
+  height: 100%;
+}
+
+/* Parallax: the wall rises faster than the page and tips back into place. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .inner {
+      animation: rise linear both;
+      animation-timeline: --wall;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(30%) scale(0.92);
+    opacity: 0.2;
+  }
 }

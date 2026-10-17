@@ -1,7 +1,15 @@
 .hero {
   position: relative;
   height: 100svh;
+  overflow: clip;
   background: #120f17;
+  view-timeline: --hero block;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 30%;
 }
 
 .hero::after {
@@ -37,6 +45,26 @@
   border-color: var(--fg);
 }
 
+/* Parallax: while the hero scrolls away, the sculpture trails behind at about
+   half speed, shrinks and dims, so the wall below seems to slide over it. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .layer {
+      animation: sink linear both;
+      animation-timeline: --hero;
+      animation-range: exit 0% exit 100%;
+    }
+
+    .next {
+      animation:
+        bob 2.4s var(--ease) 1.6s infinite,
+        vanish linear both;
+      animation-timeline: auto, --hero;
+      animation-range: normal, exit 0% exit 25%;
+    }
+  }
+}
+
 @keyframes bob {
   0%,
   100% {
@@ -44,5 +72,18 @@
   }
   50% {
     transform: translateY(6px);
+  }
+}
+
+@keyframes sink {
+  to {
+    transform: translateY(50%) scale(0.88);
+    opacity: 0.15;
+  }
+}
+
+@keyframes vanish {
+  to {
+    opacity: 0;
   }
 }

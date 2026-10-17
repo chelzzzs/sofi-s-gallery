@@ -37,29 +37,31 @@ export function PhotoWall({ photos, onOpen }: Props) {
 
   return (
     <section className={styles.wall} aria-label="Fotos" onClick={onClick} onKeyDown={onKeyDown}>
-      <DriftWall
-        items={items}
-        columns={COLUMNS}
-        tileWidth={228}
-        tileHeight={132}
-        gap={18}
-        tilt={30}
-        turn={-14}
-        perspective={1200}
-        depth={120}
-        speed={42}
-        direction="up"
-        variance={0.45}
-        parallax={1.1}
-        lift={64}
-        fade={0.4}
-        dim={0.55}
-        overlayColor="#000000"
-        radius={14}
-        roll={0}
-        pauseOnHover={false}
-        grayscale={false}
-      />
+      <div className={styles.inner}>
+        <DriftWall
+          items={items}
+          columns={COLUMNS}
+          tileWidth={228}
+          tileHeight={132}
+          gap={18}
+          tilt={30}
+          turn={-14}
+          perspective={1200}
+          depth={120}
+          speed={42}
+          direction="up"
+          variance={0.45}
+          parallax={1.1}
+          lift={64}
+          fade={0.4}
+          dim={0.55}
+          overlayColor="#000000"
+          radius={14}
+          roll={0}
+          pauseOnHover={false}
+          grayscale={false}
+        />
+      </div>
     </section>
   )
 }
