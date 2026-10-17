@@ -9,3 +9,7 @@
 
 ## Próximos passos possíveis
 - Deploy (fora do escopo da 001).
+
+## 002 — Tela inicial (2026-10-16)
+- `Intro` com `LightPillar` (WebGL2, código fornecido pela usuária) + botão "Sofi’s Gallery"; clique faz fade e libera a galeria (`inert` até entrar).
+- Fix no LightPillar: removido `loseContext()` do cleanup — com StrictMode o efeito re-roda no mesmo canvas e o contexto ficava perdido (tela branca).
