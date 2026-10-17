@@ -1,0 +1,137 @@
+.carousel {
+  --h: min(72svh, 860px);
+  --max-w: 88vw;
+  --gap: clamp(14px, 3vw, 44px);
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  gap: clamp(20px, 4svh, 40px);
+  padding-block: 4svh;
+}
+
+@media (max-width: 700px) {
+  .carousel {
+    --h: 58svh;
+  }
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  height: var(--h);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-left: calc(50% - min(var(--h) * var(--r0), var(--max-w)) / 2);
+  padding-right: calc(50% - min(var(--h) * var(--rn), var(--max-w)) / 2);
+  position: relative;
+  cursor: grab;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.track[data-dragging] {
+  scroll-snap-type: none;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.item {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  scroll-snap-align: center;
+  opacity: 0.38;
+  transform: scale(0.97);
+  transition:
+    opacity 450ms var(--ease),
+    transform 450ms var(--ease);
+}
+
+.item[data-active] {
+  opacity: 1;
+  transform: none;
+}
+
+.item:hover,
+.item:focus-visible {
+  opacity: 1;
+}
+
+.track[data-dragging] .item {
+  cursor: grabbing;
+}
+
+.item img {
+  display: block;
+  width: min(var(--h) * var(--r), var(--max-w));
+  height: auto;
+  aspect-ratio: var(--r);
+  background: #1a1612;
+}
+
+.controls {
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 200ms,
+    opacity 200ms;
+}
+
+.nav:hover:not(:disabled) {
+  border-color: var(--fg);
+}
+
+.nav:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.progress {
+  height: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--fg);
+  transform-origin: left;
+  transition: transform 450ms var(--ease);
+}
+
+.counter {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.counter span {
+  color: var(--fg);
+}
