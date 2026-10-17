@@ -37,6 +37,7 @@ const DriftWall = ({
   variance = 0.45,
   parallax = 0.6,
   pauseOnHover = false,
+  paused = false,
   lift = 64,
   fade = 0.6,
   dim = 0.55,
@@ -57,6 +58,8 @@ const DriftWall = ({
   const pointerRef = useRef({ x: 0, y: 0 });
   const pointerDampedRef = useRef({ x: 0, y: 0 });
   const lastTsRef = useRef(null);
+  const pausedRef = useRef(paused);
+  pausedRef.current = paused;
 
   const [containerHeight, setContainerHeight] = useState(600);
   const [activeId, setActiveId] = useState(null);
@@ -125,6 +128,14 @@ const DriftWall = ({
       if (lastTsRef.current === null) lastTsRef.current = ts;
       const dt = Math.min(0.05, Math.max(0, ts - lastTsRef.current) / 1000);
       lastTsRef.current = ts;
+
+      // Frozen in place (columns and tilt) while paused; columns ease back up
+      // to speed from rest once released.
+      if (pausedRef.current) {
+        velocitiesRef.current = velocitiesRef.current.map(() => 0);
+        rafRef.current = requestAnimationFrame(animate);
+        return;
+      }
 
       const maxTilt = parallax * 8;
       const targetX = pointerRef.current.x * maxTilt;

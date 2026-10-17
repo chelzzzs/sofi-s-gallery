@@ -49,7 +49,16 @@
   transform-style: preserve-3d;
 }
 
+/* Tracks and tiles share one 3D plane, so hit testing could pick the track and
+   swallow the click; only tiles take pointer input. */
+.drift-wall__plane,
+.drift-wall__col,
+.drift-wall__track {
+  pointer-events: none;
+}
+
 .drift-wall__tile {
+  pointer-events: auto;
   position: relative;
   display: block;
   width: 100%;

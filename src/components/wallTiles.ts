@@ -9,8 +9,31 @@ const indexOfTile = (tile: HTMLElement) => {
 
 const imageRect = (tile: HTMLElement) => tile.querySelector('.drift-wall__inner')!.getBoundingClientRect()
 
-export const tileAt = (target: EventTarget) => {
-  const tile = (target as Element).closest<HTMLElement>('[data-tile-id]')
+const centreDistance = (r: DOMRect, x: number, y: number) =>
+  Math.hypot(r.left + r.width / 2 - x, r.top + r.height / 2 - y)
+
+// Nearest tile whose visible image covers the point. Parts of the tilted wall
+// sit behind the page plane, where the browser's hit test lands on the section
+// instead of the tile, so clicks there are resolved by geometry.
+const tileUnder = (x: number, y: number) => {
+  let best: HTMLElement | null = null
+  let bestDist = Infinity
+  document.querySelectorAll<HTMLElement>('[data-tile-id]').forEach((tile) => {
+    const r = imageRect(tile)
+    if (x < r.left || x > r.right || y < r.top || y > r.bottom) return
+    const dist = centreDistance(r, x, y)
+    if (dist < bestDist) {
+      bestDist = dist
+      best = tile
+    }
+  })
+  return best
+}
+
+export const tileAt = (target: EventTarget, x?: number, y?: number) => {
+  const tile =
+    (target as Element).closest<HTMLElement>('[data-tile-id]') ??
+    (x !== undefined && y !== undefined ? tileUnder(x, y) : null)
   return tile ? { index: indexOfTile(tile), rect: imageRect(tile) } : null
 }
 
@@ -23,7 +46,7 @@ export const tileRect = (index: number): DOMRect | null => {
     if (indexOfTile(tile) !== index) return
     const r = imageRect(tile)
     if (r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return
-    const dist = Math.hypot(r.left + r.width / 2 - innerWidth / 2, r.top + r.height / 2 - innerHeight / 2)
+    const dist = centreDistance(r, innerWidth / 2, innerHeight / 2)
     if (dist < bestDist) {
       bestDist = dist
       best = r

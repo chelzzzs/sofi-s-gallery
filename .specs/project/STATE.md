@@ -34,3 +34,7 @@
 - Trocar foto: desliza na direção da navegação.
 - A foto do lightbox tem tamanho pela proporção (`cqw/cqh`), não pelo arquivo: antes media 0×0 até carregar e a animação quebrava. O tile (600px) fica de fundo até a imagem grande chegar.
 - Lição: efeitos que medem e animam precisam cancelar animações anteriores (StrictMode roda o efeito 2×).
+
+## 008 — Cliques no mural e pausa com foto aberta (2026-10-17)
+- Bug: ~metade dos cliques caía no `.drift-wall__track` (mesmo plano 3D dos tiles) ou, no topo inclinado, na própria seção → nada abria. Fix: plano/coluna/trilho com `pointer-events: none` (DriftWall.css) + fallback geométrico em `tileAt` (tile cuja imagem cobre o ponto).
+- DriftWall ganhou prop `paused`: congela colunas e inclinação; ao soltar, as colunas aceleram de novo do zero. App pausa enquanto o lightbox está montado (inclui a animação de fechar, pra foto pousar exatamente no tile).

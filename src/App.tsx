@@ -32,7 +32,7 @@ export function App() {
           <Sculpture onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
         )}
         <div ref={gallery}>
-          <PhotoWall photos={photos} onOpen={(index, origin) => setOpen({ index, origin })} />
+          <PhotoWall photos={photos} paused={open !== null} onOpen={(index, origin) => setOpen({ index, origin })} />
         </div>
         {open && (
           <Lightbox

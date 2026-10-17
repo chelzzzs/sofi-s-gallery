@@ -6,14 +6,15 @@ import { COLUMNS, tileAt } from './wallTiles'
 
 type Props = {
   photos: Photo[]
+  paused: boolean
   onOpen: (index: number, origin: DOMRect) => void
 }
 
-export function PhotoWall({ photos, onOpen }: Props) {
+export function PhotoWall({ photos, paused, onOpen }: Props) {
   const items = photos.map((p) => ({ image: p.tile, title: p.alt }))
 
   const onClick = (e: MouseEvent) => {
-    const tile = tileAt(e.target)
+    const tile = tileAt(e.target, e.clientX, e.clientY)
     if (tile) onOpen(tile.index, tile.rect)
   }
 
@@ -49,6 +50,7 @@ export function PhotoWall({ photos, onOpen }: Props) {
           radius={14}
           roll={0}
           pauseOnHover={false}
+          paused={paused}
           grayscale={false}
         />
       </div>
