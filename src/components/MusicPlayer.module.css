@@ -1,7 +1,7 @@
 .player {
   display: grid;
   place-items: center;
-  padding: 24px 16px 96px;
+  padding: clamp(72px, 14svh, 150px) 16px 120px;
 }
 
 .card {
