@@ -1,7 +1,18 @@
 .wall {
+  position: relative;
   height: 100svh;
   overflow: clip;
   view-timeline: --wall block;
+}
+
+/* Fades the bottom row out instead of cutting it off above the player. */
+.wall::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 22%;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
 }
 
 .inner {

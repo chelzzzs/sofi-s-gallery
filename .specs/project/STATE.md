@@ -45,3 +45,8 @@
 - Fechar (600ms): fundo some nos primeiros ~60%, a foto se dissolve na segunda metade do voo até sumir em cima do tile. Se a foto mudou, a cópia de destino é acesa com `data-returning` e depois volta ao normal.
 - Depois de fechar, o mural segue congelado mais 600ms (`SETTLE_MS` em App) até o tile assentar; abrir outra foto nesse intervalo cancela o descongelamento.
 - Bug do "corte" ao descongelar: `items` do PhotoWall era um array novo a cada render; o DriftWall reseta os offsets das colunas quando `items` muda de identidade. Agora `useMemo`. Lição: props de array/objeto pro DriftWall precisam ser estáveis.
+
+## 010 — Player de música (só visual) (2026-10-20)
+- `MusicPlayer` abaixo do mural: play/pausa (só troca ícone e anima o equalizador), título "Trilha sonora" e o `ElasticSlider` (código da usuária) de volume. Sem áudio ainda — falta o arquivo da música.
+- Deps: `@hugeicons/react`, `@hugeicons/core-free-icons`.
+- Mural ganhou degradê no pé (`.wall::after`) pra não cortar a última linha em cima do player.
