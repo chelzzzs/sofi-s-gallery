@@ -5,107 +5,154 @@
 }
 
 .card {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 12px 28px 12px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: rgb(255 246 236 / 0.03);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--fg);
-}
-
-.play {
-  flex: none;
-  width: 52px;
-  height: 52px;
   display: grid;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  background: var(--fg);
-  color: var(--bg);
-  cursor: pointer;
-  transition: transform 250ms var(--ease);
+  grid-template-columns: 184px minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'cover head'
+    'cover body';
+  column-gap: 24px;
+  width: min(620px, 100%);
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 22px;
+  background: #151318;
+  box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.7);
+  color: #f1eff4;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
-.play:hover {
-  transform: scale(1.06);
+.cover {
+  grid-area: cover;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  object-fit: cover;
+  display: block;
 }
 
-.play:active {
-  transform: scale(0.94);
-}
-
-.info {
-  display: grid;
-  gap: 6px;
-  min-width: 8.5rem;
+.head {
+  grid-area: head;
+  padding-top: 6px;
 }
 
 .title {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 22px;
-  line-height: 1;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-/* Equalizer: flat while paused, dancing while "playing". */
-.bars {
+.artist {
+  margin: 6px 0 0;
+  font-size: 14px;
+  color: #8e8a95;
+}
+
+.body {
+  grid-area: body;
   display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 12px;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
-.bars span {
-  width: 3px;
-  height: 100%;
-  border-radius: 2px;
-  background: var(--muted);
-  transform: scaleY(0.25);
-  transform-origin: bottom;
-  transition: transform 300ms var(--ease);
+.progress {
+  width: 100%;
 }
 
-.card[data-playing] .bars span {
-  background: var(--fg);
-  animation: eq 900ms ease-in-out infinite alternate;
+.times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -6px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #a7a3ad;
 }
 
-.card[data-playing] .bars span:nth-child(2) {
-  animation-delay: -300ms;
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
 }
 
-.card[data-playing] .bars span:nth-child(3) {
-  animation-delay: -600ms;
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.card[data-playing] .bars span:nth-child(4) {
-  animation-delay: -150ms;
+.skip,
+.toggle {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #d9d6de;
+  cursor: pointer;
+  transition:
+    color 200ms,
+    background-color 200ms,
+    transform 200ms var(--ease);
 }
 
-@keyframes eq {
-  0% {
-    transform: scaleY(0.25);
-  }
-  50% {
-    transform: scaleY(1);
-  }
-  100% {
-    transform: scaleY(0.45);
-  }
+.skip {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+}
+
+.toggle {
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.07);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.skip:hover,
+.toggle:hover {
+  color: #fff;
+}
+
+.toggle:hover {
+  background: rgb(255 255 255 / 0.11);
+}
+
+.skip:active,
+.toggle:active {
+  transform: scale(0.94);
+}
+
+.volume {
+  width: 10rem;
+  color: #a7a3ad;
 }
 
 @media (max-width: 560px) {
   .card {
+    grid-template-columns: 88px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'cover head'
+      'body body';
+    column-gap: 16px;
+    row-gap: 12px;
+  }
+
+  .head {
+    align-self: center;
+    padding-top: 0;
+  }
+
+  .controls {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 16px 20px;
-    padding: 16px 20px;
-    border-radius: 28px;
+    row-gap: 4px;
   }
 
   .volume {

@@ -410,7 +410,12 @@ function ElasticSlider({
 
   useEffect(() => {
     const m = motion.current;
-    return () => cancelAnimationFrame(m.raf);
+    return () => {
+      cancelAnimationFrame(m.raf);
+      // kick() skips scheduling while raf is set; a stale id left here after a
+      // remount (StrictMode) would stop the slider from ever repainting.
+      m.raf = 0;
+    };
   }, []);
 
   const along = event => {

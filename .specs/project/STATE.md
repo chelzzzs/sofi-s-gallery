@@ -50,3 +50,5 @@
 - `MusicPlayer` abaixo do mural: play/pausa (só troca ícone e anima o equalizador), título "Trilha sonora" e o `ElasticSlider` (código da usuária) de volume. Sem áudio ainda — falta o arquivo da música.
 - Deps: `@hugeicons/react`, `@hugeicons/core-free-icons`.
 - Mural ganhou degradê no pé (`.wall::after`) pra não cortar a última linha em cima do player.
+- Player redesenhado no layout do template enviado (capa, título/artista, progresso com tempos, anterior/play/próxima, volume). Ainda visual: "tocar" roda um relógio sobre duração fictícia (`DURATION` 3:36), progresso arrastável; capa = foto 14.
+- Bug do ElasticSlider: o cleanup cancelava o rAF sem zerar `m.raf`; após o remount do StrictMode `kick()` nunca mais agendava quadro e a barra não acompanhava o arrasto. Fix: `m.raf = 0` no cleanup.
