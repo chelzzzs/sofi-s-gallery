@@ -16,3 +16,10 @@
   transform: scale(1.08);
   filter: blur(12px);
 }
+
+/* Holds the sculpture's place (one screen, same colour) for the instant its
+   code is still arriving, so the sections below don't jump. */
+.placeholder {
+  height: 100svh;
+  background: #120f17;
+}

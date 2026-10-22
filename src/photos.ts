@@ -1,3 +1,8 @@
+// Lives here, not in Sculpture.tsx, so App can preload the image without
+// pulling the (lazily loaded) sculpture component into the main bundle.
+export const SCULPTURE_SRC =
+  'https://images.unsplash.com/photo-1737071371043-761e02b1ef95?q=80&w=1400&auto=format&fit=crop'
+
 type ImgOutput = { src: string; srcset: string; w: number; h: number }
 
 export type Photo = {
@@ -48,7 +53,7 @@ export const photos: Photo[] = Object.keys(fulls)
 export type CarouselPhoto = { src: string; alt: string; title: string }
 
 const carouselSources = import.meta.glob<string>('./photos-2/*.jpg', {
-  query: '?w=1400&format=webp',
+  query: '?w=1000&format=webp',
   import: 'default',
   eager: true,
 })

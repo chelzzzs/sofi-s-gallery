@@ -1,13 +1,21 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import styles from './App.module.css'
 import { Intro } from './components/Intro'
-import { Lightbox } from './components/Lightbox'
 import { MusicPlayer } from './components/MusicPlayer'
 import { PhotoCarousel } from './components/PhotoCarousel'
 import { PhotoWall } from './components/PhotoWall'
-import { SCULPTURE_SRC, Sculpture } from './components/Sculpture'
 import { returnTarget } from './components/wallTiles'
-import { photos } from './photos'
+import { photos, SCULPTURE_SRC } from './photos'
+
+// Split out of the main bundle so the intro screen loads less code. Both are
+// fetched ahead of time (see below), before they are actually needed.
+const loadSculpture = () => import('./components/Sculpture')
+const loadLightbox = () => import('./components/Lightbox')
+const Sculpture = lazy(() => loadSculpture().then((m) => ({ default: m.Sculpture })))
+const Lightbox = lazy(() => loadLightbox().then((m) => ({ default: m.Lightbox })))
+
+const whenIdle = (fn: () => void) =>
+  'requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 600)
 
 type Phase = 'intro' | 'leaving' | 'done'
 
@@ -23,10 +31,16 @@ export function App() {
   const [frozen, setFrozen] = useState(false)
   const thaw = useRef(0)
 
+  // While the intro plays: warm up the sculpture's code and image, then the
+  // lightbox's code, so neither waits on the network when it's first shown.
   useEffect(() => {
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
-    img.src = SCULPTURE_SRC
+    whenIdle(() => {
+      loadSculpture()
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.src = SCULPTURE_SRC
+      whenIdle(loadLightbox)
+    })
   }, [])
 
   useEffect(() => {
@@ -50,21 +64,25 @@ export function App() {
     <>
       <main ref={main} tabIndex={-1} className={styles.main} data-phase={phase} inert={phase === 'intro'}>
         {phase !== 'intro' && (
-          <Sculpture onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
+          <Suspense fallback={<div className={styles.placeholder} />}>
+            <Sculpture onNext={() => gallery.current?.scrollIntoView({ behavior: 'smooth' })} />
+          </Suspense>
         )}
         <div ref={gallery}>
-          <PhotoWall photos={photos} paused={frozen} onOpen={openPhoto} />
+          <PhotoWall photos={photos} paused={frozen || phase === 'intro'} onOpen={openPhoto} />
         </div>
         <MusicPlayer autoPlay={phase !== 'intro'} />
-        <PhotoCarousel />
+        <PhotoCarousel watch={phase === 'done'} />
         {open && (
-          <Lightbox
-            photos={photos}
-            startIndex={open.index}
-            origin={open.origin}
-            locate={returnTarget}
-            onClose={closePhoto}
-          />
+          <Suspense fallback={null}>
+            <Lightbox
+              photos={photos}
+              startIndex={open.index}
+              origin={open.origin}
+              locate={returnTarget}
+              onClose={closePhoto}
+            />
+          </Suspense>
         )}
       </main>
       {phase !== 'done' && (

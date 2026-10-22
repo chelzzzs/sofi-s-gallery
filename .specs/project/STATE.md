@@ -67,3 +67,9 @@
 ## 013 — Parallax na página toda (2026-10-21)
 - Player: sobe e clareia ao entrar; fica para trás e escurece ao sair. Segundo carrossel: sobe mais rápido e encaixa ao entrar. Mural: ganhou saída (começa em `exit 35%`, porque ele tem a altura da tela e a entrada termina onde a saída começaria).
 - Lição: com duas animações de scroll no mesmo elemento, a de saída usa `fill: forwards` pra não sobrescrever a de entrada antes de começar.
+
+## 014 — Desempenho (2026-10-21)
+- Medido no navegador do app em produção (`vite preview`). Lighthouse headless não serve: o pilar anima sem parar e o Chrome headless não registra pintura (NO_FCP).
+- Antes, na intro: ~2,4 MB, 13 fotos do 2º carrossel (1400px) e Spotify carregando; JS 111 KB gz.
+- Feito: 2º carrossel (código + fotos) só monta perto da tela e só depois de entrar (`watch`); fotos dele 1400→1000px; Spotify só cria o player após o clique de entrada; escultura, lightbox e FlexCarousel em chunks separados (pré-carregados em idle durante a intro); `SCULPTURE_SRC` foi pra `photos.ts`; mural pausado durante a intro e fora da tela.
+- Depois, na intro: ~754 KB, sem Spotify nem fotos do carrossel; JS 82 KB gz.

@@ -1,9 +1,7 @@
 import { Arrow } from './Arrow'
 import DitherVeil from './DitherVeil'
 import styles from './Sculpture.module.css'
-
-export const SCULPTURE_SRC =
-  'https://images.unsplash.com/photo-1737071371043-761e02b1ef95?q=80&w=1400&auto=format&fit=crop'
+import { SCULPTURE_SRC } from '../photos'
 
 export function Sculpture({ onNext }: { onNext: () => void }) {
   return (

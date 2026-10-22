@@ -1,4 +1,4 @@
-import { useMemo, type KeyboardEvent, type MouseEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react'
 import type { Photo } from '../photos'
 import DriftWall from './DriftWall'
 import styles from './PhotoWall.module.css'
@@ -15,6 +15,15 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
   // its starting position whenever `items` changes identity.
   const items = useMemo(() => photos.map((p) => ({ image: p.tile, title: p.alt })), [photos])
 
+  // The wall animates every frame; stop it while it's scrolled out of view.
+  const section = useRef<HTMLElement>(null)
+  const [visible, setVisible] = useState(true)
+  useEffect(() => {
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting))
+    io.observe(section.current!)
+    return () => io.disconnect()
+  }, [])
+
   const onClick = (e: MouseEvent) => {
     const tile = tileAt(e.target, e.clientX, e.clientY)
     if (tile) onOpen(tile.index, tile.rect)
@@ -29,7 +38,7 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
   }
 
   return (
-    <section className={styles.wall} aria-label="Fotos" onClick={onClick} onKeyDown={onKeyDown}>
+    <section ref={section} className={styles.wall} aria-label="Fotos" onClick={onClick} onKeyDown={onKeyDown}>
       <div className={styles.inner}>
         <DriftWall
           items={items}
@@ -52,7 +61,7 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
           radius={14}
           roll={0}
           pauseOnHover={false}
-          paused={paused}
+          paused={paused || !visible}
           grayscale={false}
         />
       </div>

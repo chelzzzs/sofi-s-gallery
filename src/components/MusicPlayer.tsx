@@ -34,7 +34,10 @@ export function MusicPlayer({ autoPlay }: Props) {
   const [ready, setReady] = useState(false)
   const [current, setCurrent] = useState(0)
 
+  // Spotify's script and player are only loaded once the visitor enters the
+  // gallery, so they don't weigh on the intro screen.
   useEffect(() => {
+    if (!autoPlay) return
     const box = host.current!
     const slot = document.createElement('div')
     box.appendChild(slot)
@@ -66,7 +69,7 @@ export function MusicPlayer({ autoPlay }: Props) {
       setReady(false)
       box.replaceChildren()
     }
-  }, [])
+  }, [autoPlay])
 
   useEffect(() => {
     if (!autoPlay || !ready || playing.current) return
