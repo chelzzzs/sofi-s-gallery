@@ -75,6 +75,20 @@
   }
 }
 
+/* On phones the shrinking read as the sculpture glitching in size: there it
+   simply scrolls away, fading out as it goes. */
+@media (max-width: 700px) {
+  .layer {
+    animation-name: fade-away;
+  }
+}
+
+@keyframes fade-away {
+  to {
+    opacity: 0.15;
+  }
+}
+
 @keyframes sink {
   to {
     transform: translateY(50%) scale(0.88);

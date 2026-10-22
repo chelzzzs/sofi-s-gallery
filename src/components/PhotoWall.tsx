@@ -15,6 +15,21 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
   // its starting position whenever `items` changes identity.
   const items = useMemo(() => photos.map((p) => ({ image: p.tile, title: p.alt })), [photos])
 
+  // On phones the desktop tiles fill the screen with the middle column and cut
+  // off the outer two; smaller tiles keep all three columns in view.
+  const [narrow, setNarrow] = useState(() => matchMedia('(max-width: 600px)').matches)
+  useEffect(() => {
+    const mq = matchMedia('(max-width: 600px)')
+    const onChange = () => setNarrow(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  // The sideways turn also pulls the right column toward the viewer and off a
+  // narrow screen, so phones get a gentler turn too.
+  const size = narrow
+    ? { width: 124, height: 72, gap: 10, radius: 10, lift: 36, turn: -5 }
+    : { width: 228, height: 132, gap: 18, radius: 14, lift: 64, turn: -14 }
+
   // The wall animates every frame; stop it while it's scrolled out of view.
   const section = useRef<HTMLElement>(null)
   const [visible, setVisible] = useState(true)
@@ -43,22 +58,22 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
         <DriftWall
           items={items}
           columns={COLUMNS}
-          tileWidth={228}
-          tileHeight={132}
-          gap={18}
+          tileWidth={size.width}
+          tileHeight={size.height}
+          gap={size.gap}
           tilt={30}
-          turn={-14}
+          turn={size.turn}
           perspective={1200}
           depth={120}
           speed={42}
           direction="up"
           variance={0.45}
           parallax={1.1}
-          lift={64}
+          lift={size.lift}
           fade={0.4}
           dim={0.55}
           overlayColor="#000000"
-          radius={14}
+          radius={size.radius}
           roll={0}
           pauseOnHover={false}
           paused={paused || !visible}

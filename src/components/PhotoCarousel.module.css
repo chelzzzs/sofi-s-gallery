@@ -23,6 +23,14 @@
   }
 }
 
+/* On phones the scroll-linked transform fought with the WebGL redraws and the
+   photos shook while scrolling: there the carousel just scrolls in. */
+@media (max-width: 700px) {
+  .inner {
+    animation: none;
+  }
+}
+
 @keyframes carousel-in {
   from {
     transform: translateY(30%) scale(0.92);
