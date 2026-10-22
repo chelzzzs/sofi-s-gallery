@@ -16,6 +16,16 @@ npm-debug.log*
 .env.*
 !.env.example
 *.local
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
 
 # Editors and OS
 .vscode/*

@@ -4,7 +4,7 @@ Escopo: **Medium** · Status: implementada
 
 ## Contexto
 
-Galeria pessoal de 15 fotos (2000×1333 paisagem e 1333×2000 retrato misturadas; tons quentes, clima de filme). Projeto novo em `C:\Users\miche\go\src\projects\photo-gallery`.
+Galeria pessoal de 15 fotos (2000×1333 paisagem e 1333×2000 retrato misturadas; tons quentes, clima de filme). Projeto novo, na pasta `photo-gallery`.
 
 ## Stack
 
