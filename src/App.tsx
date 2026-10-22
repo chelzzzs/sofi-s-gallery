@@ -49,6 +49,19 @@ export function App() {
 
   useEffect(() => () => clearTimeout(thaw.current), [])
 
+  // Whether the visitor is using touch/mouse or the keyboard right now.
+  const lastInput = useRef<'pointer' | 'keyboard'>('pointer')
+  useEffect(() => {
+    const onPointer = () => (lastInput.current = 'pointer')
+    const onKey = () => (lastInput.current = 'keyboard')
+    addEventListener('pointerdown', onPointer, true)
+    addEventListener('keydown', onKey, true)
+    return () => {
+      removeEventListener('pointerdown', onPointer, true)
+      removeEventListener('keydown', onKey, true)
+    }
+  }, [])
+
   const openPhoto = (index: number, origin: DOMRect) => {
     clearTimeout(thaw.current)
     setFrozen(true)
@@ -57,7 +70,19 @@ export function App() {
 
   const closePhoto = () => {
     setOpen(null)
-    thaw.current = window.setTimeout(() => setFrozen(false), SETTLE_MS)
+    thaw.current = window.setTimeout(() => {
+      setFrozen(false)
+      // Closing hands focus back to the tile. With a keyboard that is what you
+      // want; after a tap it left the tile lit, lifted and outlined with no
+      // pointer to move away and release it, so let it go once the wall moves.
+      if (lastInput.current === 'pointer')
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => {
+            const el = document.activeElement
+            if (el instanceof HTMLElement && el.closest('[data-tile-id]')) el.blur()
+          }),
+        )
+    }, SETTLE_MS)
   }
 
   return (
