@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture, RenderTarget } from 'ogl';
 
 import './DitherVeil.css';
@@ -393,6 +393,9 @@ const DitherVeil = ({
   const containerRef = useRef(null);
   const settingsRef = useRef(null);
   const wakeRef = useRef(() => {});
+  // Bumped when the browser restores a lost WebGL context (common on phones
+  // when the tab is backgrounded); re-runs the setup below on a fresh canvas.
+  const [generation, setGeneration] = useState(0);
 
   useEffect(() => {
     settingsRef.current = {
@@ -429,6 +432,10 @@ const DitherVeil = ({
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     container.appendChild(canvas);
+    const onContextLost = event => event.preventDefault();
+    const onContextRestored = () => setGeneration(value => value + 1);
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     const floatMask = renderer.isWebgl2 && !!renderer.getExtension('EXT_color_buffer_float');
     const geometry = new Triangle(gl);
@@ -797,10 +804,12 @@ const DitherVeil = ({
       container.removeEventListener('pointerdown', onDown);
       container.removeEventListener('pointerleave', onLeave);
       container.removeEventListener('pointercancel', onLeave);
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
-  }, [src]);
+  }, [src, generation]);
 
   return <div ref={containerRef} className={`dither-veil ${className}`.trim()} style={style} />;
 };

@@ -1,5 +1,9 @@
+import { useEffect, useRef } from 'react'
 import LightPillar from './LightPillar'
 import styles from './Intro.module.css'
+
+// Length of the fade-out (350ms delay + 900ms in Intro.module.css), plus slack.
+const LEAVE_MS = 1400
 
 type Props = {
   leaving: boolean
@@ -8,6 +12,16 @@ type Props = {
 }
 
 export function Intro({ leaving, onLeave, onDone }: Props) {
+  // transitionend never fires if the tab is hidden mid-fade; don't leave the
+  // gallery waiting behind the intro in that case.
+  const done = useRef(onDone)
+  done.current = onDone
+  useEffect(() => {
+    if (!leaving) return
+    const id = setTimeout(() => done.current(), LEAVE_MS)
+    return () => clearTimeout(id)
+  }, [leaving])
+
   return (
     <div
       className={styles.intro}

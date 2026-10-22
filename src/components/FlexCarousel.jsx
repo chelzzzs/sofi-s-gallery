@@ -293,6 +293,9 @@ const FlexCarousel = ({
   const [active, setActive] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [focusOpen, setFocusOpen] = useState(false);
+  // Bumped when the browser restores a lost WebGL context (common on phones
+  // when the tab is backgrounded); re-runs the engine setup on a fresh canvas.
+  const [generation, setGeneration] = useState(0);
 
   const base = BEND_PRESETS[preset] || BEND_PRESETS.liquid;
   const pick = (value, key) => (value === undefined || value === null ? base[key] : value);
@@ -355,6 +358,10 @@ const FlexCarousel = ({
     canvas.style.height = '100%';
     canvas.setAttribute('aria-hidden', 'true');
     container.prepend(canvas);
+    const onContextLost = event => event.preventDefault();
+    const onContextRestored = () => setGeneration(value => value + 1);
+    canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     const cardProgram = new Program(gl, {
       vertex: cardVertex,
@@ -1228,12 +1235,14 @@ const FlexCarousel = ({
       container.removeEventListener('focus', onFocus);
       container.removeEventListener('blur', onBlur);
       document.removeEventListener('visibilitychange', onVisibility);
+      canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
       slots.forEach(slot => slot.dispose());
       slots = [];
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
-  }, []);
+  }, [generation]);
 
   const current = list[active] || list[0];
   const label = current ? current.title || current.alt || `Image ${active + 1}` : '';

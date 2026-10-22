@@ -73,3 +73,5 @@
 - Antes, na intro: ~2,4 MB, 13 fotos do 2º carrossel (1400px) e Spotify carregando; JS 111 KB gz.
 - Feito: 2º carrossel (código + fotos) só monta perto da tela e só depois de entrar (`watch`); fotos dele 1400→1000px; Spotify só cria o player após o clique de entrada; escultura, lightbox e FlexCarousel em chunks separados (pré-carregados em idle durante a intro); `SCULPTURE_SRC` foi pra `photos.ts`; mural pausado durante a intro e fora da tela.
 - Depois, na intro: ~754 KB, sem Spotify nem fotos do carrossel; JS 82 KB gz.
+- Celular (375×812): sem rolagem lateral; mural com 28 tiles na tela (9 inteiros); player e carrossel cabem. Achado: a escultura perdeu o contexto WebGL uma vez (ícone de "carinha triste") e não voltava. DitherVeil e FlexCarousel agora recriam o canvas no `webglcontextrestored` (escultura testada forçando a perda; carrossel com o mesmo código, sem teste ao vivo — o painel parou de desenhar quadros).
+- Intro: se `transitionend` não chegar (aba oculta durante o fade), encerra sozinha após 1,4s.
