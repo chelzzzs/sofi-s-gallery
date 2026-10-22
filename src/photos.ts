@@ -69,10 +69,12 @@ const carouselText: Record<string, [title: string, alt: string]> = {
   '13': ['Guará em voo', 'Guará vermelho em voo, de asas abertas'],
 }
 
-export const carouselPhotos: CarouselPhoto[] = Object.keys(carouselSources)
-  .sort()
-  .map((path) => {
-    const id = path.match(/(\d+)\.jpg$/)![1]
-    const [title, alt] = carouselText[id] ?? ['', '']
-    return { src: carouselSources[path], alt, title }
-  })
+// Display order. The carousel loops, so look-alikes sit about half a turn
+// apart: the two sheds, the three birds on blue sky, the two photos of the
+// woman with the dog, and the two boats with the flag.
+const carouselOrder = ['01', '04', '06', '07', '03', '12', '08', '02', '10', '09', '13', '11', '05']
+
+export const carouselPhotos: CarouselPhoto[] = carouselOrder.map((id) => {
+  const [title, alt] = carouselText[id]
+  return { src: carouselSources[`./photos-2/${id}.jpg`], alt, title }
+})
