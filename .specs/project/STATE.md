@@ -57,3 +57,8 @@
 - 13 fotos novas em `src/photos-2/` (WebP 1400px via imagetools), `carouselPhotos` em `photos.ts` com título curto + alt.
 - `PhotoCarousel` (FlexCarousel da usuária, props do template, WebGL/ogl) abaixo do player, 560px de altura. Clique amplia no próprio carrossel (focusOnClick), não usa o lightbox do mural.
 - `captureWheel` ligado (como no template): a rolagem vertical do mouse em cima do carrossel passa as fotos em vez de rolar a página.
+
+## 012 — Player via Spotify (2026-10-21)
+- Músicas comerciais não podem ser hospedadas como arquivo; player virou embed oficial do Spotify (licença fica com o Spotify; sem login → prévia de 30s).
+- 4 faixas (`TRACKS` em `MusicPlayer.tsx`): Into the Sun (BTS), Dracula (Tame Impala, JENNIE), One Of The Girls (The Weeknd, JENNIE, Lily-Rose Depp), Like Animals (BTS). Botões trocam o embed (um por vez).
+- Player visual anterior (ElasticSlider + hugeicons) removido; está no histórico em 5266b5a.
