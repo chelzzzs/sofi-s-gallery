@@ -13,6 +13,7 @@ const TRACKS = [
   { id: '1B9HE8h6ZnljGk0LZ2H30D', title: 'Heaven', artist: 'RM' },
   { id: '62HKW77nt6tudsIHXT2A0M', title: 'Come back to me', artist: 'RM' },
   { id: '2N0SPREDYqILVEFSsWF5N5', title: 'Love Me Again', artist: 'V' },
+  { id: '6T17ZI0glfM2IGLdUwtnLK', title: 'JoyRide', artist: 'CORTIS' },
 ]
 
 const uri = (id: string) => `spotify:track:${id}`
