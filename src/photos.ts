@@ -43,3 +43,36 @@ export const photos: Photo[] = Object.keys(fulls)
     const id = path.match(/(\d+)\.jpg$/)![1]
     return { id, alt: alts[id] ?? '', tile: tiles[path], full: fulls[path] }
   })
+
+// Second set, shown in the carousel under the music player.
+export type CarouselPhoto = { src: string; alt: string; title: string }
+
+const carouselSources = import.meta.glob<string>('./photos-2/*.jpg', {
+  query: '?w=1400&format=webp',
+  import: 'default',
+  eager: true,
+})
+
+const carouselText: Record<string, [title: string, alt: string]> = {
+  '01': ['Galpão', 'Galpão de madeira ao lado de um cacto, iluminado pelo sol'],
+  '02': ['Galpão e cacto', 'Galpão de madeira com um cacto e palmeiras ao fundo'],
+  '03': ['Bananeira', 'Cacho de bananas verdes contra o céu azul'],
+  '04': ['Gaivota', 'Gaivota voando no céu azul'],
+  '05': ['Veleiros', 'Dois veleiros ancorados diante de um morro'],
+  '06': ['Companhia', 'Mulher de costas com um cachorro pomerânia no ombro, olhando a água'],
+  '07': ['Barco de pesca', 'Barco de pesca colorido com a bandeira do Brasil'],
+  '08': ['Reflexos', 'Reflexos dourados do sol na água'],
+  '09': ['Bandeira', 'Bandeira do Brasil num barco, com montanhas ao fundo no fim de tarde'],
+  '10': ['Abraço', 'Mulher de óculos abraçando um cachorro pomerânia'],
+  '11': ['Pasto', 'Bois no pasto, um deitado em primeiro plano'],
+  '12': ['Guará', 'Guará vermelho voando no céu azul'],
+  '13': ['Guará em voo', 'Guará vermelho em voo, de asas abertas'],
+}
+
+export const carouselPhotos: CarouselPhoto[] = Object.keys(carouselSources)
+  .sort()
+  .map((path) => {
+    const id = path.match(/(\d+)\.jpg$/)![1]
+    const [title, alt] = carouselText[id] ?? ['', '']
+    return { src: carouselSources[path], alt, title }
+  })

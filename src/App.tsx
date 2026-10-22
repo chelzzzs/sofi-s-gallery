@@ -3,6 +3,7 @@ import styles from './App.module.css'
 import { Intro } from './components/Intro'
 import { Lightbox } from './components/Lightbox'
 import { MusicPlayer } from './components/MusicPlayer'
+import { PhotoCarousel } from './components/PhotoCarousel'
 import { PhotoWall } from './components/PhotoWall'
 import { SCULPTURE_SRC, Sculpture } from './components/Sculpture'
 import { returnTarget } from './components/wallTiles'
@@ -55,6 +56,7 @@ export function App() {
           <PhotoWall photos={photos} paused={frozen} onOpen={openPhoto} />
         </div>
         <MusicPlayer />
+        <PhotoCarousel />
         {open && (
           <Lightbox
             photos={photos}

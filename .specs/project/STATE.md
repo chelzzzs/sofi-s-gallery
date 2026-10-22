@@ -52,3 +52,8 @@
 - Mural ganhou degradê no pé (`.wall::after`) pra não cortar a última linha em cima do player.
 - Player redesenhado no layout do template enviado (capa, título/artista, progresso com tempos, anterior/play/próxima, volume). Ainda visual: "tocar" roda um relógio sobre duração fictícia (`DURATION` 3:36), progresso arrastável; capa = foto 14.
 - Bug do ElasticSlider: o cleanup cancelava o rAF sem zerar `m.raf`; após o remount do StrictMode `kick()` nunca mais agendava quadro e a barra não acompanhava o arrasto. Fix: `m.raf = 0` no cleanup.
+
+## 011 — Segundo carrossel (FlexCarousel) (2026-10-21)
+- 13 fotos novas em `src/photos-2/` (WebP 1400px via imagetools), `carouselPhotos` em `photos.ts` com título curto + alt.
+- `PhotoCarousel` (FlexCarousel da usuária, props do template, WebGL/ogl) abaixo do player, 560px de altura. Clique amplia no próprio carrossel (focusOnClick), não usa o lightbox do mural.
+- `captureWheel` ligado (como no template): a rolagem vertical do mouse em cima do carrossel passa as fotos em vez de rolar a página.
