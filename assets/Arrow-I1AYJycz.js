@@ -1,1 +1,0 @@
-import{n as e}from"./index-B_AIryzf.js";var t=e(),n={left:`M15 5l-7 7 7 7`,right:`M9 5l7 7-7 7`,down:`M5 9l7 7 7-7`};function r({dir:e}){return(0,t.jsx)(`svg`,{width:`20`,height:`20`,viewBox:`0 0 24 24`,fill:`none`,"aria-hidden":`true`,children:(0,t.jsx)(`path`,{d:n[e],stroke:`currentColor`,strokeWidth:`1.6`,strokeLinecap:`round`,strokeLinejoin:`round`})})}export{r as t};
