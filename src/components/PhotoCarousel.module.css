@@ -3,5 +3,29 @@
   width: 100%;
   height: 560px;
   margin-bottom: 96px;
+  overflow: clip;
   color: var(--fg);
+  view-timeline: --carousel block;
+}
+
+.inner {
+  height: 100%;
+}
+
+/* Parallax: rises faster than the page and settles as it fully enters. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .inner {
+      animation: carousel-in linear both;
+      animation-timeline: --carousel;
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@keyframes carousel-in {
+  from {
+    transform: translateY(30%) scale(0.92);
+    opacity: 0.2;
+  }
 }

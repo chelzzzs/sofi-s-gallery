@@ -23,10 +23,24 @@
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
     .inner {
-      animation: rise linear both;
-      animation-timeline: --wall;
-      animation-range: entry 0% entry 100%;
+      animation:
+        rise linear both,
+        wall-out linear forwards;
+      animation-timeline: --wall, --wall;
+      /* The wall is exactly one screen tall, so entry ends where exit starts;
+         the exit waits a third of the way so the wall holds still while it
+         fills the screen. */
+      animation-range:
+        entry 0% entry 100%,
+        exit 35% exit 100%;
     }
+  }
+}
+
+@keyframes wall-out {
+  to {
+    transform: translateY(25%) scale(0.94);
+    opacity: 0.3;
   }
 }
 

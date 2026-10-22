@@ -63,3 +63,7 @@
 - 4 faixas (`TRACKS` em `MusicPlayer.tsx`): Into the Sun (BTS), Dracula (Tame Impala, JENNIE), One Of The Girls (The Weeknd, JENNIE, Lily-Rose Depp), Like Animals (BTS). Botões trocam o embed (um por vez).
 - Player visual anterior (ElasticSlider + hugeicons) removido; está no histórico em 5266b5a.
 - Autoplay: embed controlado pela iFrame API do Spotify (`src/spotify.ts`). Toca no clique em "Sofi’s Gallery" (navegadores bloqueiam som antes de interação) e avança sozinho para a próxima faixa ao terminar.
+
+## 013 — Parallax na página toda (2026-10-21)
+- Player: sobe e clareia ao entrar; fica para trás e escurece ao sair. Segundo carrossel: sobe mais rápido e encaixa ao entrar. Mural: ganhou saída (começa em `exit 35%`, porque ele tem a altura da tela e a entrada termina onde a saída começaria).
+- Lição: com duas animações de scroll no mesmo elemento, a de saída usa `fill: forwards` pra não sobrescrever a de entrada antes de começar.
