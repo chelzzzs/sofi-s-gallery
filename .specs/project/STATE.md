@@ -62,3 +62,4 @@
 - Músicas comerciais não podem ser hospedadas como arquivo; player virou embed oficial do Spotify (licença fica com o Spotify; sem login → prévia de 30s).
 - 4 faixas (`TRACKS` em `MusicPlayer.tsx`): Into the Sun (BTS), Dracula (Tame Impala, JENNIE), One Of The Girls (The Weeknd, JENNIE, Lily-Rose Depp), Like Animals (BTS). Botões trocam o embed (um por vez).
 - Player visual anterior (ElasticSlider + hugeicons) removido; está no histórico em 5266b5a.
+- Autoplay: embed controlado pela iFrame API do Spotify (`src/spotify.ts`). Toca no clique em "Sofi’s Gallery" (navegadores bloqueiam som antes de interação) e avança sozinho para a próxima faixa ao terminar.

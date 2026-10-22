@@ -55,7 +55,7 @@ export function App() {
         <div ref={gallery}>
           <PhotoWall photos={photos} paused={frozen} onOpen={openPhoto} />
         </div>
-        <MusicPlayer />
+        <MusicPlayer autoPlay={phase !== 'intro'} />
         <PhotoCarousel />
         {open && (
           <Lightbox
