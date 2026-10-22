@@ -10,6 +10,7 @@ const TRACKS = [
   { id: '7CyPwkp0oE8Ro9Dd5CUDjW', title: 'One Of The Girls', artist: 'The Weeknd, JENNIE, Lily-Rose Depp' },
   { id: '2IFND3phjzIG1RcPnHh2hP', title: 'Like Animals', artist: 'BTS' },
   { id: '2chbuybiy6aDDBC985tJcP', title: 'ZEN', artist: 'JENNIE' },
+  { id: '1B9HE8h6ZnljGk0LZ2H30D', title: 'Heaven', artist: 'RM' },
 ]
 
 const uri = (id: string) => `spotify:track:${id}`
