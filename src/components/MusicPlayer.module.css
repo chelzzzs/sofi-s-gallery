@@ -10,22 +10,28 @@
   width: min(620px, 100%);
 }
 
+/* One scrolling row, so the list can keep growing; the right edge fades to
+   hint that there is more. */
 .tracks {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
   gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+  mask-image: linear-gradient(to right, #000 85%, transparent);
 }
 
-@media (max-width: 560px) {
-  .tracks {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.tracks::-webkit-scrollbar {
+  display: none;
 }
 
 .track {
+  flex: 0 0 156px;
   display: grid;
   gap: 3px;
   min-width: 0;
+  scroll-snap-align: start;
   padding: 10px 14px;
   border: 1px solid rgb(255 255 255 / 0.08);
   border-radius: 12px;

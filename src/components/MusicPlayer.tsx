@@ -11,6 +11,7 @@ const TRACKS = [
   { id: '2IFND3phjzIG1RcPnHh2hP', title: 'Like Animals', artist: 'BTS' },
   { id: '2chbuybiy6aDDBC985tJcP', title: 'ZEN', artist: 'JENNIE' },
   { id: '1B9HE8h6ZnljGk0LZ2H30D', title: 'Heaven', artist: 'RM' },
+  { id: '62HKW77nt6tudsIHXT2A0M', title: 'Come back to me', artist: 'RM' },
 ]
 
 const uri = (id: string) => `spotify:track:${id}`
@@ -23,6 +24,7 @@ type Props = {
 
 export function MusicPlayer({ autoPlay }: Props) {
   const host = useRef<HTMLDivElement>(null)
+  const list = useRef<HTMLDivElement>(null)
   const controller = useRef<EmbedController | null>(null)
   const loaded = useRef(TRACKS[0].id)
   const playing = useRef(false)
@@ -70,6 +72,17 @@ export function MusicPlayer({ autoPlay }: Props) {
     controller.current?.play()
   }, [autoPlay, ready])
 
+  // Keep the current song's button in view, scrolling only the row (never the
+  // page), e.g. when the player moves on to the next track by itself.
+  useEffect(() => {
+    const row = list.current
+    const button = row?.children[current] as HTMLElement | undefined
+    if (!row || !button) return
+    const left = button.offsetLeft - row.offsetLeft
+    if (left < row.scrollLeft || left + button.offsetWidth > row.scrollLeft + row.clientWidth * 0.85)
+      row.scrollTo({ left: left - 8, behavior: 'smooth' })
+  }, [current])
+
   useEffect(() => {
     const c = controller.current
     const { id } = TRACKS[current]
@@ -83,7 +96,7 @@ export function MusicPlayer({ autoPlay }: Props) {
   return (
     <section className={styles.player} aria-label="Player de música">
       <div className={styles.box}>
-        <div className={styles.tracks} role="group" aria-label="Escolher música">
+        <div ref={list} className={styles.tracks} role="group" aria-label="Escolher música">
           {TRACKS.map((t, i) => (
             <button
               key={t.id}
