@@ -38,6 +38,7 @@ const DriftWall = ({
   parallax = 0.6,
   pauseOnHover = false,
   paused = false,
+  releaseKey = 0,
   lift = 64,
   fade = 0.6,
   dim = 0.55,
@@ -194,6 +195,12 @@ const DriftWall = ({
     hoveredColRef.current = -1;
     setActiveId(null);
   }, []);
+
+  // Changing releaseKey drops the lit tile, for when no pointer will leave it
+  // (a finger after a tap).
+  useEffect(() => {
+    if (releaseKey) release();
+  }, [releaseKey, release]);
 
   const handlePointerMove = useCallback(
     e => {

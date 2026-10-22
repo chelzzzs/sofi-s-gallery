@@ -9,6 +9,9 @@ type Props = {
   startIndex: number
   origin: DOMRect | null
   locate: (index: number) => ReturnTarget | null
+  // Closing hands focus back to the tile that opened the photo. That's right
+  // for keyboard users; after a tap or click it lit the tile's focus outline.
+  keepFocus: () => boolean
   onClose: () => void
 }
 
@@ -38,7 +41,7 @@ const asTile = (from: DOMRect, to: DOMRect): Keyframe => {
 const settled: Keyframe = { transform: 'none', clipPath: 'inset(0px 0px round 0px)' }
 const shrunk: Keyframe = { transform: 'scale(0.9)', opacity: 0 }
 
-export function Lightbox({ photos, startIndex, origin, locate, onClose }: Props) {
+export function Lightbox({ photos, startIndex, origin, locate, keepFocus, onClose }: Props) {
   const dialog = useRef<HTMLDialogElement>(null)
   const backdrop = useRef<HTMLDivElement>(null)
   const chrome = useRef<HTMLDivElement>(null)
@@ -85,6 +88,8 @@ export function Lightbox({ photos, startIndex, origin, locate, onClose }: Props)
       ])
     }
     dialog.current?.close()
+    // Same task as close(), so the restored focus is dropped before any paint.
+    if (!keepFocus() && document.activeElement instanceof HTMLElement) document.activeElement.blur()
     onClose()
     if (returning) setTimeout(() => delete returning.dataset.returning, 150)
   }

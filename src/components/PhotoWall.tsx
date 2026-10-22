@@ -7,10 +7,11 @@ import { COLUMNS, tileAt } from './wallTiles'
 type Props = {
   photos: Photo[]
   paused: boolean
+  releaseKey: number
   onOpen: (index: number, origin: DOMRect) => void
 }
 
-export function PhotoWall({ photos, paused, onOpen }: Props) {
+export function PhotoWall({ photos, paused, releaseKey, onOpen }: Props) {
   // Must stay the same array across renders: DriftWall resets every column to
   // its starting position whenever `items` changes identity.
   const items = useMemo(() => photos.map((p) => ({ image: p.tile, title: p.alt })), [photos])
@@ -77,6 +78,7 @@ export function PhotoWall({ photos, paused, onOpen }: Props) {
           roll={0}
           pauseOnHover={false}
           paused={paused || !visible}
+          releaseKey={releaseKey}
           grayscale={false}
         />
       </div>

@@ -49,10 +49,10 @@ export function App() {
 
   useEffect(() => () => clearTimeout(thaw.current), [])
 
-  // Whether the visitor is using touch/mouse or the keyboard right now.
-  const lastInput = useRef<'pointer' | 'keyboard'>('pointer')
+  // How the visitor is interacting right now: touch, mouse or keyboard.
+  const lastInput = useRef<'touch' | 'mouse' | 'keyboard'>('mouse')
   useEffect(() => {
-    const onPointer = () => (lastInput.current = 'pointer')
+    const onPointer = (e: PointerEvent) => (lastInput.current = e.pointerType === 'mouse' ? 'mouse' : 'touch')
     const onKey = () => (lastInput.current = 'keyboard')
     addEventListener('pointerdown', onPointer, true)
     addEventListener('keydown', onKey, true)
@@ -61,6 +61,9 @@ export function App() {
       removeEventListener('keydown', onKey, true)
     }
   }, [])
+
+  // Bumped to make the wall drop its lit, lifted tile (see closePhoto).
+  const [releaseKey, setReleaseKey] = useState(0)
 
   const openPhoto = (index: number, origin: DOMRect) => {
     clearTimeout(thaw.current)
@@ -72,16 +75,9 @@ export function App() {
     setOpen(null)
     thaw.current = window.setTimeout(() => {
       setFrozen(false)
-      // Closing hands focus back to the tile. With a keyboard that is what you
-      // want; after a tap it left the tile lit, lifted and outlined with no
-      // pointer to move away and release it, so let it go once the wall moves.
-      if (lastInput.current === 'pointer')
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => {
-            const el = document.activeElement
-            if (el instanceof HTMLElement && el.closest('[data-tile-id]')) el.blur()
-          }),
-        )
+      // A mouse moving off the tile is what normally un-lights it; a finger
+      // never does, so after a tap the wall lets go of it itself.
+      if (lastInput.current === 'touch') setReleaseKey((k) => k + 1)
     }, SETTLE_MS)
   }
 
@@ -94,7 +90,12 @@ export function App() {
           </Suspense>
         )}
         <div ref={gallery}>
-          <PhotoWall photos={photos} paused={frozen || phase === 'intro'} onOpen={openPhoto} />
+          <PhotoWall
+            photos={photos}
+            paused={frozen || phase === 'intro'}
+            releaseKey={releaseKey}
+            onOpen={openPhoto}
+          />
         </div>
         <MusicPlayer autoPlay={phase !== 'intro'} />
         <PhotoCarousel watch={phase === 'done'} />
@@ -105,6 +106,7 @@ export function App() {
               startIndex={open.index}
               origin={open.origin}
               locate={returnTarget}
+              keepFocus={() => lastInput.current === 'keyboard'}
               onClose={closePhoto}
             />
           </Suspense>

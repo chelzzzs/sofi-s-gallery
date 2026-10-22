@@ -20,6 +20,7 @@ export type DriftWallProps = {
   parallax?: number
   pauseOnHover?: boolean
   paused?: boolean
+  releaseKey?: number
   lift?: number
   fade?: number
   dim?: number
