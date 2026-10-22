@@ -5,14 +5,14 @@ import styles from './MusicPlayer.module.css'
 // Official Spotify embed: the tracks stay licensed through Spotify. Visitors
 // signed in to Spotify hear the full song; everyone else gets a 30s preview.
 const TRACKS = [
+  { id: '1B9HE8h6ZnljGk0LZ2H30D', title: 'Heaven', artist: 'RM' },
+  { id: '62HKW77nt6tudsIHXT2A0M', title: 'Come back to me', artist: 'RM' },
+  { id: '2N0SPREDYqILVEFSsWF5N5', title: 'Love Me Again', artist: 'V' },
   { id: '1ZNolq7VI7efGlh2hb2VVr', title: 'Into the Sun', artist: 'BTS' },
   { id: '5yvVYFDUpbnjcnRBgjwTzM', title: 'Dracula', artist: 'Tame Impala, JENNIE' },
   { id: '7CyPwkp0oE8Ro9Dd5CUDjW', title: 'One Of The Girls', artist: 'The Weeknd, JENNIE, Lily-Rose Depp' },
   { id: '2IFND3phjzIG1RcPnHh2hP', title: 'Like Animals', artist: 'BTS' },
   { id: '2chbuybiy6aDDBC985tJcP', title: 'ZEN', artist: 'JENNIE' },
-  { id: '1B9HE8h6ZnljGk0LZ2H30D', title: 'Heaven', artist: 'RM' },
-  { id: '62HKW77nt6tudsIHXT2A0M', title: 'Come back to me', artist: 'RM' },
-  { id: '2N0SPREDYqILVEFSsWF5N5', title: 'Love Me Again', artist: 'V' },
   { id: '6T17ZI0glfM2IGLdUwtnLK', title: 'JoyRide', artist: 'CORTIS' },
 ]
 
